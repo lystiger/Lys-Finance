@@ -5,6 +5,16 @@ iOS. Sprint 00 contains the production foundation only: app shell, design tokens
 localization, dependency injection, local database infrastructure, error capture,
 tests, and CI. It intentionally contains no finance business behavior.
 
+## App preview
+
+<p align="center">
+  <img
+    src="docs/Screenshot_2026-07-13-17-12-05-232_com.lysfinance.app.jpg"
+    alt="Lys Finance Vaults placeholder in dark mode on Android"
+    width="320"
+  />
+</p>
+
 ## Prerequisites
 
 - Git
