@@ -68,3 +68,14 @@ Sprint 00; no user-facing financial notification is scheduled.
 
 See ADR-001 through ADR-004 for accepted framework, state, persistence, and
 offline-first decisions.
+
+## Temporary Freezed compatibility constraint
+
+Sprint 00 pins `freezed` 3.2.6-dev.1 intentionally. The current stable
+`riverpod_generator` 4.0.4 requires analyzer 12, while stable `freezed` 3.2.3
+requires analyzer below 9 and therefore cannot resolve alongside the current
+Riverpod generator and `json_serializable` 6.14.0. Freezed 3.2.6-dev.1 is the
+available analyzer-12-compatible release selected by Pub and is used only for
+the immutable `AppConfig` model. Replace it with the next stable Freezed release
+that supports analyzer 12 or later; do not broaden this prerelease dependency to
+business models in the meantime.
