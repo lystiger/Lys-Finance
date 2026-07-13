@@ -116,6 +116,13 @@ final class TransactionDao {
     }
     if (filter.type != null) {
       predicate &= transactions.type.equals(filter.type!.name);
+    } else {
+      // Vault contributions/withdrawals and (still-unreachable) transfers are
+      // Transaction rows (Decision 1 in Sprint 03) but do not belong in the
+      // general expense/income ledger unless a caller explicitly asks for
+      // that type. Vault-scoped activity is read through
+      // queryVaultActivity/watchVaultActivity instead.
+      predicate &= transactions.type.isIn(<String>['expense', 'income']);
     }
     if (filter.accountIds.isNotEmpty) {
       predicate &= transactions.accountId.isIn(filter.accountIds);
@@ -200,6 +207,34 @@ final class TransactionDao {
     // is composed. This remains an application-only affordance; paged ledger
     // reads and balance calculations stay in SQL.
     return rows.length;
+  }
+
+  Future<List<TransactionRow>> queryVaultActivity(String vaultId) async {
+    final SimpleSelectStatement<$TransactionsTable, TransactionRow> query =
+        database.select(database.transactions)
+          ..where(
+            ($TransactionsTable table) =>
+                table.vaultId.equals(vaultId) & table.deletedAt.isNull(),
+          )
+          ..orderBy(<OrderingTerm Function($TransactionsTable)>[
+            ($TransactionsTable table) => OrderingTerm.desc(table.occurredAt),
+            ($TransactionsTable table) => OrderingTerm.desc(table.createdAt),
+          ]);
+    return query.get();
+  }
+
+  Stream<List<TransactionRow>> watchVaultActivity(String vaultId) {
+    final SimpleSelectStatement<$TransactionsTable, TransactionRow> query =
+        database.select(database.transactions)
+          ..where(
+            ($TransactionsTable table) =>
+                table.vaultId.equals(vaultId) & table.deletedAt.isNull(),
+          )
+          ..orderBy(<OrderingTerm Function($TransactionsTable)>[
+            ($TransactionsTable table) => OrderingTerm.desc(table.occurredAt),
+            ($TransactionsTable table) => OrderingTerm.desc(table.createdAt),
+          ]);
+    return query.watch();
   }
 
   Future<int> signedTransactionTotal(String accountId) async {

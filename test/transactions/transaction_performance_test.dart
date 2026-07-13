@@ -33,7 +33,7 @@ void main() {
                   ? TransactionType.income.name
                   : TransactionType.expense.name,
               accountId: account,
-              categoryId: income ? salary : food,
+              categoryId: Value<String?>(income ? salary : food),
               incClass: Value<String?>(income ? null : IncClass.necessity.name),
               currencyCode: Currency.vnd.code,
               amountMinor: index + 1,

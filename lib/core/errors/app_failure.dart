@@ -95,3 +95,69 @@ final class CurrencyAccountMismatchFailure extends RepositoryFailure {
         code: 'currency_account_mismatch',
       );
 }
+
+final class InvalidGoalAmountFailure extends ValidationFailure {
+  const InvalidGoalAmountFailure()
+    : super(
+        'Enter a goal amount greater than zero.',
+        code: 'invalid_goal_amount',
+      );
+}
+
+final class MissingVaultFailure extends RepositoryFailure {
+  const MissingVaultFailure()
+    : super('Choose a vault to continue.', code: 'missing_vault');
+}
+
+final class ArchivedVaultFailure extends RepositoryFailure {
+  const ArchivedVaultFailure()
+    : super('This vault is archived. Choose another.', code: 'archived_vault');
+}
+
+final class CurrencyVaultMismatchFailure extends RepositoryFailure {
+  const CurrencyVaultMismatchFailure()
+    : super(
+        'This vault uses a different currency.',
+        code: 'currency_vault_mismatch',
+      );
+}
+
+final class VaultCurrencyMismatchFailure extends RepositoryFailure {
+  const VaultCurrencyMismatchFailure()
+    : super(
+        'Both vaults must use the same currency.',
+        code: 'vault_currency_mismatch',
+      );
+}
+
+final class SameVaultTransferFailure extends ValidationFailure {
+  const SameVaultTransferFailure()
+    : super(
+        'Choose two different vaults to transfer between.',
+        code: 'same_vault_transfer',
+      );
+}
+
+final class InsufficientVaultBalanceFailure extends RepositoryFailure {
+  const InsufficientVaultBalanceFailure()
+    : super(
+        'This vault does not have enough balance for that amount.',
+        code: 'insufficient_vault_balance',
+      );
+}
+
+final class WithdrawalReasonRequiredFailure extends ValidationFailure {
+  const WithdrawalReasonRequiredFailure()
+    : super(
+        'This vault is locked. Add a reason to continue.',
+        code: 'withdrawal_reason_required',
+      );
+}
+
+final class VaultCurrencyLockedFailure extends RepositoryFailure {
+  const VaultCurrencyLockedFailure()
+    : super(
+        'This vault already has contributions and cannot change currency.',
+        code: 'vault_currency_locked',
+      );
+}

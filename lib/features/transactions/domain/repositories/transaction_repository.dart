@@ -37,4 +37,6 @@ abstract interface class TransactionRepository {
   Future<AppResult<int>> count(TransactionFilter filter);
   Future<AppResult<Money>> getAccountBalance(String accountId);
   Stream<Money> watchAccountBalance(String accountId);
+  Future<AppResult<List<Transaction>>> queryVaultActivity(String vaultId);
+  Stream<List<Transaction>> watchVaultActivity(String vaultId);
 }

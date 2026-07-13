@@ -16,3 +16,13 @@ category, exact account-currency equality, category/type compatibility, and the
 expense/income INC pairing rule. Notes are trimmed and limited to 2,000 grapheme
 clusters. Presentation maps stable failure codes to localized English and
 Vietnamese messages; no validation message is persisted.
+
+Vaults require a positive goal amount in the vault's own currency when a goal
+is set, non-negative priority/sort order, and an all-or-nothing
+auto-contribution configuration (kind and value both present or both absent).
+Contributions and withdrawals are transactions with a `vaultId` instead of a
+`categoryId` and reuse every transaction-level rule above; a withdrawal
+additionally cannot exceed the vault's current derived balance, and a locked
+vault requires a non-empty reason. A vault-to-vault transfer requires two
+distinct vaults sharing one currency and an amount not exceeding the source
+vault's balance.
