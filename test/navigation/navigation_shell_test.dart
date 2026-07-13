@@ -6,6 +6,8 @@ import 'package:lys_finance/app/router/app_router.dart';
 import 'package:lys_finance/features/settings/application/providers/settings_providers.dart';
 import 'package:lys_finance/features/settings/domain/entities/account.dart';
 import 'package:lys_finance/features/settings/domain/entities/category.dart';
+import 'package:lys_finance/features/vaults/application/providers/vault_providers.dart';
+import 'package:lys_finance/features/vaults/domain/entities/vault.dart';
 
 void main() {
   testWidgets('shell navigates to every Sprint 00 destination', (
@@ -18,6 +20,9 @@ void main() {
         overrides: [
           activeAccountsProvider.overrideWith(
             (ref) => Stream.value(const <Account>[]),
+          ),
+          activeVaultsProvider.overrideWith(
+            (ref) => Stream.value(const <Vault>[]),
           ),
         ],
         child: LysFinanceApp(router: router),

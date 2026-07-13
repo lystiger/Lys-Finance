@@ -14,6 +14,7 @@ final class Transaction {
     required this.amount,
     required this.accountId,
     required this.categoryId,
+    required this.vaultId,
     required this.incClass,
     required this.note,
     required this.occurredAt,
@@ -27,7 +28,8 @@ final class Transaction {
   final TransactionType type;
   final Money amount;
   final String accountId;
-  final String categoryId;
+  final String? categoryId;
+  final String? vaultId;
   final IncClass? incClass;
   final String? note;
   final DateTime occurredAt;
@@ -38,18 +40,22 @@ final class Transaction {
 
   bool get isDeleted => deletedAt != null;
   bool get isExpense => type == TransactionType.expense;
+  bool get isVaultActivity =>
+      type == TransactionType.contribution ||
+      type == TransactionType.withdrawal;
 
   static AppResult<Transaction> create({
     required String id,
     required TransactionType type,
     required Money amount,
     required String accountId,
-    required String categoryId,
     required IncClass? incClass,
     required DateTime occurredAt,
     required DateTime createdAt,
     required DateTime updatedAt,
     required int version,
+    String? categoryId,
+    String? vaultId,
     String? note,
     DateTime? deletedAt,
   }) {
@@ -60,7 +66,10 @@ final class Transaction {
         ValidationFailure('Invalid transaction identity.', code: 'invalid_id'),
       );
     }
-    if (type != TransactionType.expense && type != TransactionType.income) {
+    if (type != TransactionType.expense &&
+        type != TransactionType.income &&
+        type != TransactionType.contribution &&
+        type != TransactionType.withdrawal) {
       return const AppError<Transaction>(
         ValidationFailure(
           'Unsupported transaction type.',
@@ -76,13 +85,41 @@ final class Transaction {
         ),
       );
     }
-    if (accountId.isEmpty || categoryId.isEmpty) {
+    if (accountId.isEmpty) {
       return const AppError<Transaction>(
-        ValidationFailure('Choose an account and category.', code: 'required'),
+        ValidationFailure('Choose an account.', code: 'required'),
+      );
+    }
+    final bool isExpenseOrIncome =
+        type == TransactionType.expense || type == TransactionType.income;
+    if (isExpenseOrIncome && (categoryId == null || categoryId.isEmpty)) {
+      return const AppError<Transaction>(
+        ValidationFailure('Choose a category.', code: 'required'),
+      );
+    }
+    if (isExpenseOrIncome && vaultId != null) {
+      return const AppError<Transaction>(
+        ValidationFailure(
+          'This transaction type cannot reference a vault.',
+          code: 'unexpected_vault',
+        ),
+      );
+    }
+    if (!isExpenseOrIncome && categoryId != null) {
+      return const AppError<Transaction>(
+        ValidationFailure(
+          'This transaction type cannot reference a category.',
+          code: 'unexpected_category',
+        ),
+      );
+    }
+    if (!isExpenseOrIncome && (vaultId == null || vaultId.isEmpty)) {
+      return const AppError<Transaction>(
+        ValidationFailure('Choose a vault.', code: 'required'),
       );
     }
     if ((type == TransactionType.expense && incClass == null) ||
-        (type == TransactionType.income && incClass != null)) {
+        (type != TransactionType.expense && incClass != null)) {
       return const AppError<Transaction>(
         ValidationFailure('Invalid classification.', code: 'invalid_inc_class'),
       );
@@ -107,6 +144,7 @@ final class Transaction {
         amount: amount,
         accountId: accountId,
         categoryId: categoryId,
+        vaultId: vaultId,
         incClass: incClass,
         note: normalizedNote,
         occurredAt: occurredAt.toUtc(),
@@ -122,6 +160,7 @@ final class Transaction {
     Money? amount,
     String? accountId,
     String? categoryId,
+    String? vaultId,
     IncClass? incClass,
     bool clearIncClass = false,
     String? note,
@@ -137,6 +176,7 @@ final class Transaction {
     amount: amount ?? this.amount,
     accountId: accountId ?? this.accountId,
     categoryId: categoryId ?? this.categoryId,
+    vaultId: vaultId ?? this.vaultId,
     incClass: clearIncClass ? null : incClass ?? this.incClass,
     note: clearNote ? null : note ?? this.note,
     occurredAt: (occurredAt ?? this.occurredAt).toUtc(),
@@ -154,6 +194,7 @@ final class Transaction {
       amount == other.amount &&
       accountId == other.accountId &&
       categoryId == other.categoryId &&
+      vaultId == other.vaultId &&
       incClass == other.incClass &&
       note == other.note &&
       occurredAt == other.occurredAt &&
@@ -169,6 +210,7 @@ final class Transaction {
     amount,
     accountId,
     categoryId,
+    vaultId,
     incClass,
     note,
     occurredAt,

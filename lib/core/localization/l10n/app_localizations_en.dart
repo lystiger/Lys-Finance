@@ -258,4 +258,257 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get today => 'Today';
+
+  @override
+  String get vaultEmergencyFund => 'Emergency Fund';
+
+  @override
+  String get vaultJapanMasters => 'Japan Master\'s';
+
+  @override
+  String get vaultAiInfrastructure => 'AI Infrastructure';
+
+  @override
+  String get vaultElysia => 'Elysia';
+
+  @override
+  String get vaultGpuUpgrade => 'GPU Upgrade';
+
+  @override
+  String get vaultInvestment => 'Investment';
+
+  @override
+  String get vaultFreedomFund => 'Freedom Fund';
+
+  @override
+  String get vaultVacation => 'Vacation';
+
+  @override
+  String get newVault => 'New vault';
+
+  @override
+  String get editVault => 'Edit vault';
+
+  @override
+  String get vaultName => 'Vault name';
+
+  @override
+  String get vaultDescription => 'Description';
+
+  @override
+  String get optionalDescription => 'Optional description';
+
+  @override
+  String get goalAmount => 'Goal amount';
+
+  @override
+  String get optionalGoalAmount => 'Optional goal amount';
+
+  @override
+  String get targetDate => 'Target date';
+
+  @override
+  String get optionalTargetDate => 'Optional target date';
+
+  @override
+  String get withdrawalPolicy => 'Withdrawal policy';
+
+  @override
+  String get withdrawalPolicyLocked => 'Locked';
+
+  @override
+  String get withdrawalPolicySoft => 'Soft';
+
+  @override
+  String get withdrawalPolicyDeadlineLinked => 'Deadline-linked';
+
+  @override
+  String get archiveVault => 'Archive vault';
+
+  @override
+  String get archiveVaultTitle => 'Archive this vault?';
+
+  @override
+  String get archiveVaultMessage =>
+      'It leaves your active vaults and can be restored later.';
+
+  @override
+  String get restoreVault => 'Restore vault';
+
+  @override
+  String get vaultArchived => 'Vault archived.';
+
+  @override
+  String get vaultRestored => 'Vault restored.';
+
+  @override
+  String get activeVaults => 'Active vaults';
+
+  @override
+  String get seeAllVaults => 'See all';
+
+  @override
+  String get emptyVaultsTitle => 'No vaults yet';
+
+  @override
+  String get emptyVaultsMessage =>
+      'Create a vault to start saving toward something.';
+
+  @override
+  String get createVault => 'Create vault';
+
+  @override
+  String get contribute => 'Contribute';
+
+  @override
+  String get withdraw => 'Withdraw';
+
+  @override
+  String get transfer => 'Transfer';
+
+  @override
+  String get contributeToVault => 'Contribute to vault';
+
+  @override
+  String get withdrawFromVault => 'Withdraw from vault';
+
+  @override
+  String get transferBetweenVaults => 'Transfer between vaults';
+
+  @override
+  String get sourceVault => 'From vault';
+
+  @override
+  String get destinationVault => 'To vault';
+
+  @override
+  String get reason => 'Reason';
+
+  @override
+  String get optionalReason => 'Optional reason';
+
+  @override
+  String get reasonRequired => 'Reason (required for a locked vault)';
+
+  @override
+  String get currentBalance => 'Current balance';
+
+  @override
+  String get remainingAmount => 'Remaining';
+
+  @override
+  String get monthlyAverage => 'Monthly average';
+
+  @override
+  String get estimatedCompletion => 'Estimated completion';
+
+  @override
+  String get noGoalSet => 'No goal set';
+
+  @override
+  String get notEnoughData => 'Not enough data yet';
+
+  @override
+  String get goalCompletedLabel => 'Completed';
+
+  @override
+  String get goalOnTrack => 'On track';
+
+  @override
+  String get goalBehind => 'Behind';
+
+  @override
+  String get goalAtRisk => 'At risk';
+
+  @override
+  String get goalNoTarget => 'No target';
+
+  @override
+  String get goalNoData => 'No data';
+
+  @override
+  String get vaultHistory => 'Vault history';
+
+  @override
+  String get emptyVaultHistoryTitle => 'No activity yet';
+
+  @override
+  String get emptyVaultHistoryMessage =>
+      'Contributions, withdrawals, and transfers will appear here.';
+
+  @override
+  String get historyContribution => 'Contribution';
+
+  @override
+  String get historyWithdrawal => 'Withdrawal';
+
+  @override
+  String get historyTransferIn => 'Transfer in';
+
+  @override
+  String get historyTransferOut => 'Transfer out';
+
+  @override
+  String get historyCreated => 'Vault created';
+
+  @override
+  String get historyEdited => 'Vault edited';
+
+  @override
+  String get historyArchived => 'Vault archived';
+
+  @override
+  String get historyRestored => 'Vault restored';
+
+  @override
+  String historyMilestone(String percent) {
+    return 'Reached $percent%';
+  }
+
+  @override
+  String get historyGoalCompleted => 'Goal completed';
+
+  @override
+  String get historyGoalReopened => 'Goal reopened';
+
+  @override
+  String get vaultCompletedCelebrationTitle => 'Goal complete!';
+
+  @override
+  String vaultCompletedCelebrationMessage(String vaultName) {
+    return '$vaultName reached its goal.';
+  }
+
+  @override
+  String get invalidGoalAmountError => 'Enter a goal amount greater than zero.';
+
+  @override
+  String get missingVaultError => 'Choose a vault to continue.';
+
+  @override
+  String get archivedVaultError => 'This vault is archived. Choose another.';
+
+  @override
+  String get currencyVaultMismatchError =>
+      'This vault uses a different currency.';
+
+  @override
+  String get vaultCurrencyMismatchError =>
+      'Both vaults must use the same currency.';
+
+  @override
+  String get sameVaultTransferError =>
+      'Choose two different vaults to transfer between.';
+
+  @override
+  String get insufficientVaultBalanceError =>
+      'This vault does not have enough balance for that amount.';
+
+  @override
+  String get withdrawalReasonRequiredError =>
+      'This vault is locked. Add a reason to continue.';
+
+  @override
+  String get vaultCurrencyLockedError =>
+      'This vault already has contributions and cannot change currency.';
 }

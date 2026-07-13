@@ -3,8 +3,8 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'app_database.g.dart';
 
-const int appDatabaseSchemaVersion = 3;
-const int foundationSeedVersion = 2;
+const int appDatabaseSchemaVersion = 4;
+const int foundationSeedVersion = 3;
 
 @DataClassName('AccountRow')
 class Accounts extends Table {
@@ -80,6 +80,62 @@ class AppMetadataEntries extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{key};
 }
 
+@DataClassName('VaultRow')
+class Vaults extends Table {
+  TextColumn get id => text()();
+  TextColumn get name => text().withLength(min: 1, max: 80).nullable()();
+  TextColumn get localizationKey => text().nullable()();
+  TextColumn get description =>
+      text().withLength(min: 0, max: 500).nullable()();
+  TextColumn get iconKey => text()();
+  TextColumn get colorToken => text()();
+  TextColumn get currencyCode => text().withLength(min: 3, max: 3)();
+  IntColumn get goalAmountMinor => integer().nullable().check(
+    const CustomExpression<bool>(
+      'goal_amount_minor IS NULL OR goal_amount_minor > 0',
+    ),
+  )();
+  IntColumn get targetDate => integer().nullable()();
+  IntColumn get priority => integer()
+      .withDefault(const Constant<int>(0))
+      .check(const CustomExpression<bool>('priority >= 0'))();
+  IntColumn get sortOrder =>
+      integer().check(const CustomExpression<bool>('sort_order >= 0'))();
+  TextColumn get withdrawalPolicy => text().check(
+    const CustomExpression<bool>(
+      "withdrawal_policy IN ('locked','soft','deadlineLinked')",
+    ),
+  )();
+  BoolColumn get isSystem =>
+      boolean().withDefault(const Constant<bool>(false))();
+  BoolColumn get autoContributionEnabled =>
+      boolean().withDefault(const Constant<bool>(false))();
+  TextColumn get autoContributionKind => text().nullable().check(
+    const CustomExpression<bool>(
+      "auto_contribution_kind IS NULL OR auto_contribution_kind IN ('fixed','percentOfIncome')",
+    ),
+  )();
+  IntColumn get autoContributionValue => integer().nullable().check(
+    const CustomExpression<bool>(
+      'auto_contribution_value IS NULL OR auto_contribution_value > 0',
+    ),
+  )();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+  IntColumn get deletedAt => integer().nullable()();
+  IntColumn get version =>
+      integer().check(const CustomExpression<bool>('version >= 1'))();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<String> get customConstraints => <String>[
+    'CHECK ((auto_contribution_enabled = 0) OR '
+        '(auto_contribution_kind IS NOT NULL AND auto_contribution_value IS NOT NULL))',
+  ];
+}
+
 @DataClassName('TransactionRow')
 class Transactions extends Table {
   TextColumn get id => text()();
@@ -90,8 +146,13 @@ class Transactions extends Table {
   )();
   TextColumn get accountId =>
       text().references(Accounts, #id, onDelete: KeyAction.restrict)();
-  TextColumn get categoryId =>
-      text().references(Categories, #id, onDelete: KeyAction.restrict)();
+  TextColumn get categoryId => text().nullable().references(
+    Categories,
+    #id,
+    onDelete: KeyAction.restrict,
+  )();
+  TextColumn get vaultId =>
+      text().nullable().references(Vaults, #id, onDelete: KeyAction.restrict)();
   TextColumn get incClass => text().nullable()();
   TextColumn get currencyCode => text().withLength(min: 3, max: 3)();
   IntColumn get amountMinor =>
@@ -113,7 +174,54 @@ class Transactions extends Table {
   @override
   List<String> get customConstraints => <String>[
     "CHECK ((type = 'expense' AND inc_class IN ('investment','necessity','consumption')) OR (type = 'income' AND inc_class IS NULL) OR type IN ('transfer','contribution','withdrawal'))",
+    "CHECK ((type IN ('expense','income') AND category_id IS NOT NULL AND vault_id IS NULL) OR "
+        "(type IN ('contribution','withdrawal') AND vault_id IS NOT NULL AND category_id IS NULL) OR "
+        "(type = 'transfer' AND category_id IS NULL AND vault_id IS NULL))",
   ];
+}
+
+@DataClassName('VaultTransferRow')
+class VaultTransfers extends Table {
+  TextColumn get id => text()();
+  @ReferenceName('outgoingTransfers')
+  TextColumn get sourceVaultId =>
+      text().references(Vaults, #id, onDelete: KeyAction.restrict)();
+  @ReferenceName('incomingTransfers')
+  TextColumn get destinationVaultId =>
+      text().references(Vaults, #id, onDelete: KeyAction.restrict)();
+  TextColumn get currencyCode => text().withLength(min: 3, max: 3)();
+  IntColumn get amountMinor =>
+      integer().check(const CustomExpression<bool>('amount_minor > 0'))();
+  TextColumn get note => text().withLength(min: 0, max: 500).nullable()();
+  IntColumn get occurredAt => integer()();
+  IntColumn get createdAt => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<String> get customConstraints => <String>[
+    'CHECK (source_vault_id <> destination_vault_id)',
+  ];
+}
+
+@DataClassName('VaultHistoryRow')
+class VaultHistory extends Table {
+  TextColumn get id => text()();
+  TextColumn get vaultId =>
+      text().references(Vaults, #id, onDelete: KeyAction.restrict)();
+  TextColumn get eventType => text().check(
+    const CustomExpression<bool>(
+      "event_type IN ('created','edited','archived','restored',"
+      "'milestoneReached','goalCompleted','goalReopened')",
+    ),
+  )();
+  TextColumn get payload => text().withLength(min: 0, max: 500).nullable()();
+  IntColumn get occurredAt => integer()();
+  IntColumn get createdAt => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
 }
 
 @DriftDatabase(
@@ -122,7 +230,10 @@ class Transactions extends Table {
     Categories,
     AppSettingsEntries,
     AppMetadataEntries,
+    Vaults,
     Transactions,
+    VaultTransfers,
+    VaultHistory,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -138,12 +249,15 @@ class AppDatabase extends _$AppDatabase {
       await migrator.createAll();
       await _createFoundationIndexes();
       await _createTransactionIndexes();
+      await _createVaultIndexes();
       await _seedFoundation();
+      await _seedVaults();
     },
     onUpgrade: _migrate,
     beforeOpen: (OpeningDetails details) async {
       await customStatement('PRAGMA foreign_keys = ON');
       await _seedFoundation();
+      await _seedVaults();
       final List<QueryRow> violations = await customSelect(
         'PRAGMA foreign_key_check',
       ).get();
@@ -174,6 +288,55 @@ class AppDatabase extends _$AppDatabase {
       await _createTransactionIndexes();
       await _seedFoundation();
     }
+    if (from < 4) {
+      if (from >= 3) {
+        // The transactions table already exists from a prior session with the
+        // narrower schema (category_id NOT NULL, no vault_id). SQLite cannot
+        // alter a column's nullability in place, so the table is recreated
+        // under the current (widened) Dart definition and existing rows are
+        // copied across unchanged, with vault_id defaulting to NULL.
+        await customStatement(
+          'ALTER TABLE transactions RENAME TO transactions_v3',
+        );
+        await migrator.createTable(transactions);
+        await customStatement(
+          'INSERT INTO transactions (id, type, account_id, category_id, '
+          'vault_id, inc_class, currency_code, amount_minor, note, '
+          'occurred_at, created_at, updated_at, deleted_at, version) '
+          'SELECT id, type, account_id, category_id, NULL, inc_class, '
+          'currency_code, amount_minor, note, occurred_at, created_at, '
+          'updated_at, deleted_at, version FROM transactions_v3',
+        );
+        await customStatement('DROP TABLE transactions_v3');
+        await _createTransactionIndexes();
+      }
+      await migrator.createTable(vaults);
+      await migrator.createTable(vaultTransfers);
+      await migrator.createTable(vaultHistory);
+      await _createVaultIndexes();
+      await _seedVaults();
+    }
+  }
+
+  Future<void> _createVaultIndexes() async {
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS vaults_active_order ON vaults(deleted_at, sort_order)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS vaults_active_priority ON vaults(deleted_at, priority)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_vault_ledger ON transactions(vault_id, deleted_at, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS vault_transfers_source ON vault_transfers(source_vault_id, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS vault_transfers_destination ON vault_transfers(destination_vault_id, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS vault_history_vault ON vault_history(vault_id, occurred_at DESC)',
+    );
   }
 
   Future<void> _createTransactionIndexes() async {
@@ -320,6 +483,33 @@ class AppDatabase extends _$AppDatabase {
       );
     });
   }
+
+  Future<void> _seedVaults() async {
+    final int timestamp = DateTime.utc(2026).microsecondsSinceEpoch;
+    await batch((Batch batch) {
+      for (final _VaultSeed seed in _vaultSeeds) {
+        batch.insert(
+          vaults,
+          VaultsCompanion.insert(
+            id: seed.id,
+            name: const Value<String?>(null),
+            localizationKey: Value<String?>(seed.localizationKey),
+            iconKey: seed.iconKey,
+            colorToken: seed.colorToken,
+            currencyCode: 'VND',
+            priority: Value<int>(seed.priority),
+            sortOrder: seed.sortOrder,
+            withdrawalPolicy: seed.withdrawalPolicy,
+            isSystem: const Value<bool>(true),
+            createdAt: timestamp,
+            updatedAt: timestamp,
+            version: 1,
+          ),
+          mode: InsertMode.insertOrIgnore,
+        );
+      }
+    });
+  }
 }
 
 final class _CategorySeed {
@@ -459,5 +649,100 @@ const List<_CategorySeed> _categorySeeds = <_CategorySeed>[
     iconKey: 'more_horiz',
     colorToken: 'income',
     sortOrder: 4,
+  ),
+];
+
+final class _VaultSeed {
+  const _VaultSeed({
+    required this.id,
+    required this.localizationKey,
+    required this.iconKey,
+    required this.colorToken,
+    required this.withdrawalPolicy,
+    required this.priority,
+    required this.sortOrder,
+  });
+
+  final String id;
+  final String localizationKey;
+  final String iconKey;
+  final String colorToken;
+  final String withdrawalPolicy;
+  final int priority;
+  final int sortOrder;
+}
+
+const List<_VaultSeed> _vaultSeeds = <_VaultSeed>[
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000201',
+    localizationKey: 'vault.emergencyFund',
+    iconKey: 'shield',
+    colorToken: 'necessity',
+    withdrawalPolicy: 'locked',
+    priority: 7,
+    sortOrder: 0,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000202',
+    localizationKey: 'vault.japanMasters',
+    iconKey: 'school',
+    colorToken: 'investment',
+    withdrawalPolicy: 'soft',
+    priority: 6,
+    sortOrder: 1,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000203',
+    localizationKey: 'vault.aiInfrastructure',
+    iconKey: 'dns',
+    colorToken: 'investment',
+    withdrawalPolicy: 'soft',
+    priority: 5,
+    sortOrder: 2,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000204',
+    localizationKey: 'vault.elysia',
+    iconKey: 'auto_awesome',
+    colorToken: 'investment',
+    withdrawalPolicy: 'soft',
+    priority: 4,
+    sortOrder: 3,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000205',
+    localizationKey: 'vault.gpuUpgrade',
+    iconKey: 'memory',
+    colorToken: 'investment',
+    withdrawalPolicy: 'soft',
+    priority: 3,
+    sortOrder: 4,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000206',
+    localizationKey: 'vault.investment',
+    iconKey: 'trending_up',
+    colorToken: 'investment',
+    withdrawalPolicy: 'soft',
+    priority: 2,
+    sortOrder: 5,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000207',
+    localizationKey: 'vault.freedomFund',
+    iconKey: 'flight_takeoff',
+    colorToken: 'primary',
+    withdrawalPolicy: 'deadlineLinked',
+    priority: 1,
+    sortOrder: 6,
+  ),
+  _VaultSeed(
+    id: '00000000-0000-4000-8000-000000000208',
+    localizationKey: 'vault.vacation',
+    iconKey: 'beach_access',
+    colorToken: 'consumption',
+    withdrawalPolicy: 'soft',
+    priority: 0,
+    sortOrder: 7,
   ),
 ];

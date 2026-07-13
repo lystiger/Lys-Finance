@@ -17,5 +17,18 @@ missing records, storage errors, and optimistic-version conflicts.
   balances. Deleted rows are excluded by default and remain available through
   the Recently Deleted surface.
 
+- `VaultRepository` mirrors `AccountRepository`: watches the ordered active
+  vault list, fetch/create/versioned-update/archive/restore, plus a derived
+  `getBalance`/`watchBalance` composed from contribution/withdrawal
+  transactions and vault transfers.
+- `VaultTransferRepository` creates a transfer atomically (validating both
+  vaults' currency and the source balance inside one Drift transaction) and
+  reads/streams a vault's transfer history.
+- `VaultHistoryRepository` appends lifecycle events idempotently and
+  reads/streams them; it never stores contributions, withdrawals, or
+  transfers, which already live in `TransactionRepository` and
+  `VaultTransferRepository`. No separate `GoalRepository` exists — goal
+  fields live on `Vault` itself.
+
 Application services validate commands and orchestrate repositories. Riverpod
 providers compose concrete dependencies and remain replaceable in tests.

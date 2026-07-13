@@ -9,6 +9,9 @@ import '../../settings/application/providers/settings_providers.dart';
 import '../../settings/domain/entities/account.dart';
 import '../../transactions/application/providers/transaction_providers.dart';
 import '../../transactions/presentation/transaction_l10n.dart';
+import '../../vaults/application/providers/vault_providers.dart';
+import '../../vaults/domain/entities/vault.dart';
+import '../../vaults/presentation/widgets/vault_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -19,6 +22,7 @@ class HomeScreen extends ConsumerWidget {
     final AsyncValue<List<Account>> accounts = ref.watch(
       activeAccountsProvider,
     );
+    final AsyncValue<List<Vault>> vaults = ref.watch(activeVaultsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.home),
@@ -51,6 +55,36 @@ class HomeScreen extends ConsumerWidget {
               Text(l10n.databaseReadError),
             ],
           ),
+          if (vaults.value != null && vaults.value!.isNotEmpty) ...<Widget>[
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  l10n.activeVaults,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                TextButton(
+                  onPressed: () => context.go(AppRoutes.vaults),
+                  child: Text(l10n.seeAllVaults),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            ...(List<Vault>.of(vaults.value!)..sort((a, b) {
+                  final int byPriority = b.priority.compareTo(a.priority);
+                  return byPriority != 0
+                      ? byPriority
+                      : a.sortOrder.compareTo(b.sortOrder);
+                }))
+                .take(3)
+                .map(
+                  (vault) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: VaultCard(vault: vault),
+                  ),
+                ),
+          ],
         ],
       ),
     );

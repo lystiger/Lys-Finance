@@ -256,4 +256,256 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get today => 'Hôm nay';
+
+  @override
+  String get vaultEmergencyFund => 'Quỹ khẩn cấp';
+
+  @override
+  String get vaultJapanMasters => 'Thạc sĩ Nhật Bản';
+
+  @override
+  String get vaultAiInfrastructure => 'Hạ tầng AI';
+
+  @override
+  String get vaultElysia => 'Elysia';
+
+  @override
+  String get vaultGpuUpgrade => 'Nâng cấp GPU';
+
+  @override
+  String get vaultInvestment => 'Đầu tư';
+
+  @override
+  String get vaultFreedomFund => 'Quỹ tự do';
+
+  @override
+  String get vaultVacation => 'Du lịch';
+
+  @override
+  String get newVault => 'Két mới';
+
+  @override
+  String get editVault => 'Sửa két';
+
+  @override
+  String get vaultName => 'Tên két';
+
+  @override
+  String get vaultDescription => 'Mô tả';
+
+  @override
+  String get optionalDescription => 'Mô tả không bắt buộc';
+
+  @override
+  String get goalAmount => 'Số tiền mục tiêu';
+
+  @override
+  String get optionalGoalAmount => 'Mục tiêu không bắt buộc';
+
+  @override
+  String get targetDate => 'Ngày mục tiêu';
+
+  @override
+  String get optionalTargetDate => 'Ngày mục tiêu không bắt buộc';
+
+  @override
+  String get withdrawalPolicy => 'Chính sách rút tiền';
+
+  @override
+  String get withdrawalPolicyLocked => 'Khóa';
+
+  @override
+  String get withdrawalPolicySoft => 'Linh hoạt';
+
+  @override
+  String get withdrawalPolicyDeadlineLinked => 'Theo hạn chót';
+
+  @override
+  String get archiveVault => 'Lưu trữ két';
+
+  @override
+  String get archiveVaultTitle => 'Lưu trữ két này?';
+
+  @override
+  String get archiveVaultMessage =>
+      'Két sẽ rời khỏi danh sách két đang hoạt động và có thể khôi phục sau.';
+
+  @override
+  String get restoreVault => 'Khôi phục két';
+
+  @override
+  String get vaultArchived => 'Đã lưu trữ két.';
+
+  @override
+  String get vaultRestored => 'Đã khôi phục két.';
+
+  @override
+  String get activeVaults => 'Két đang hoạt động';
+
+  @override
+  String get seeAllVaults => 'Xem tất cả';
+
+  @override
+  String get emptyVaultsTitle => 'Chưa có két nào';
+
+  @override
+  String get emptyVaultsMessage =>
+      'Tạo một két để bắt đầu tiết kiệm cho một mục tiêu.';
+
+  @override
+  String get createVault => 'Tạo két';
+
+  @override
+  String get contribute => 'Nạp tiền';
+
+  @override
+  String get withdraw => 'Rút tiền';
+
+  @override
+  String get transfer => 'Chuyển';
+
+  @override
+  String get contributeToVault => 'Nạp tiền vào két';
+
+  @override
+  String get withdrawFromVault => 'Rút tiền từ két';
+
+  @override
+  String get transferBetweenVaults => 'Chuyển giữa các két';
+
+  @override
+  String get sourceVault => 'Từ két';
+
+  @override
+  String get destinationVault => 'Đến két';
+
+  @override
+  String get reason => 'Lý do';
+
+  @override
+  String get optionalReason => 'Lý do không bắt buộc';
+
+  @override
+  String get reasonRequired => 'Lý do (bắt buộc với két đã khóa)';
+
+  @override
+  String get currentBalance => 'Số dư hiện tại';
+
+  @override
+  String get remainingAmount => 'Còn lại';
+
+  @override
+  String get monthlyAverage => 'Trung bình hàng tháng';
+
+  @override
+  String get estimatedCompletion => 'Dự kiến hoàn thành';
+
+  @override
+  String get noGoalSet => 'Chưa đặt mục tiêu';
+
+  @override
+  String get notEnoughData => 'Chưa đủ dữ liệu';
+
+  @override
+  String get goalCompletedLabel => 'Đã hoàn thành';
+
+  @override
+  String get goalOnTrack => 'Đúng tiến độ';
+
+  @override
+  String get goalBehind => 'Chậm tiến độ';
+
+  @override
+  String get goalAtRisk => 'Có rủi ro';
+
+  @override
+  String get goalNoTarget => 'Không có mục tiêu';
+
+  @override
+  String get goalNoData => 'Không có dữ liệu';
+
+  @override
+  String get vaultHistory => 'Lịch sử két';
+
+  @override
+  String get emptyVaultHistoryTitle => 'Chưa có hoạt động';
+
+  @override
+  String get emptyVaultHistoryMessage =>
+      'Các khoản nạp, rút và chuyển sẽ hiện ở đây.';
+
+  @override
+  String get historyContribution => 'Nạp tiền';
+
+  @override
+  String get historyWithdrawal => 'Rút tiền';
+
+  @override
+  String get historyTransferIn => 'Chuyển đến';
+
+  @override
+  String get historyTransferOut => 'Chuyển đi';
+
+  @override
+  String get historyCreated => 'Đã tạo két';
+
+  @override
+  String get historyEdited => 'Đã sửa két';
+
+  @override
+  String get historyArchived => 'Đã lưu trữ két';
+
+  @override
+  String get historyRestored => 'Đã khôi phục két';
+
+  @override
+  String historyMilestone(String percent) {
+    return 'Đạt $percent%';
+  }
+
+  @override
+  String get historyGoalCompleted => 'Đã hoàn thành mục tiêu';
+
+  @override
+  String get historyGoalReopened => 'Mục tiêu mở lại';
+
+  @override
+  String get vaultCompletedCelebrationTitle => 'Hoàn thành mục tiêu!';
+
+  @override
+  String vaultCompletedCelebrationMessage(String vaultName) {
+    return '$vaultName đã đạt mục tiêu.';
+  }
+
+  @override
+  String get invalidGoalAmountError => 'Nhập số tiền mục tiêu lớn hơn không.';
+
+  @override
+  String get missingVaultError => 'Chọn một két để tiếp tục.';
+
+  @override
+  String get archivedVaultError => 'Két này đã lưu trữ. Hãy chọn két khác.';
+
+  @override
+  String get currencyVaultMismatchError => 'Két này dùng loại tiền khác.';
+
+  @override
+  String get vaultCurrencyMismatchError =>
+      'Cả hai két phải dùng cùng loại tiền.';
+
+  @override
+  String get sameVaultTransferError =>
+      'Hãy chọn hai két khác nhau để chuyển tiền.';
+
+  @override
+  String get insufficientVaultBalanceError =>
+      'Két này không đủ số dư cho số tiền đó.';
+
+  @override
+  String get withdrawalReasonRequiredError =>
+      'Két này đã khóa. Hãy thêm lý do để tiếp tục.';
+
+  @override
+  String get vaultCurrencyLockedError =>
+      'Két này đã có khoản nạp và không thể đổi loại tiền.';
 }
