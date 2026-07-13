@@ -1,0 +1,28 @@
+# Testing
+
+Tests mirror production ownership under `test/`:
+
+- Unit tests cover pure formatting, domain rules, and application behavior.
+- Provider tests use `ProviderContainer` overrides; no platform singleton is
+  required to test application code.
+- Database tests use `NativeDatabase.memory()` and must cover initialization and
+  every future migration.
+- Widget tests cover smoke startup, routing, accessibility/text scale, and both
+  themes.
+- Golden tests use the fixed viewport helper in `test/helpers/golden.dart`.
+  Baselines are reviewed UI artifacts, not automatic snapshots.
+- Device flows live under `integration_test/` and run separately from unit/widget
+  tests when an emulator or physical device is available.
+
+Run locally:
+
+```sh
+fvm flutter test
+fvm flutter test --coverage
+fvm flutter test integration_test -d <device-id>
+```
+
+Prefer fakes and provider overrides over mocks. Mock only an external boundary
+whose interaction itself matters. Tests should describe behavior and catch a
+credible regression; coverage percentage is not a reason to add meaningless
+assertions.

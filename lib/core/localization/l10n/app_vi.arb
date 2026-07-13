@@ -1,0 +1,13 @@
+{
+  "@@locale": "vi",
+  "appName": "Lys Finance",
+  "home": "Trang chủ",
+  "vaults": "Két tiết kiệm",
+  "insights": "Phân tích",
+  "assistant": "Trợ lý",
+  "settings": "Cài đặt",
+  "quickAdd": "Thêm nhanh",
+  "comingLater": "Tính năng này thuộc một sprint sau.",
+  "foundationReady": "Nền tảng đã sẵn sàng.",
+  "close": "Đóng"
+}
