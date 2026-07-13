@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "appName": "Lys Finance",
+  "home": "Home",
+  "vaults": "Vaults",
+  "insights": "Insights",
+  "assistant": "Assistant",
+  "settings": "Settings",
+  "quickAdd": "Quick Add",
+  "comingLater": "This feature belongs to a later sprint.",
+  "foundationReady": "The foundation is ready.",
+  "close": "Close"
+}
