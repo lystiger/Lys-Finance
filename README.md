@@ -1,9 +1,9 @@
 # Lys Finance
 
 Lys Finance is a calm, offline-first personal finance companion for Android and
-iOS. Sprint 00 contains the production foundation only: app shell, design tokens,
-localization, dependency injection, local database infrastructure, error capture,
-tests, and CI. It intentionally contains no finance business behavior.
+iOS. Sprint 01 adds exact integer money, currencies, account/category/settings
+contracts, local schema migration, repositories, validation, and reusable UI
+components. It intentionally contains no transaction or dashboard behavior yet.
 
 ## App preview
 
@@ -61,6 +61,10 @@ Do not edit generated sources by hand.
 - [Code style](docs/code-style.md)
 - [Git workflow](docs/git-workflow.md)
 - [Testing](docs/testing.md)
+- [Domain model](docs/domain-model.md)
+- [Database migrations](docs/database-migrations.md)
+- [Repository contracts](docs/repositories.md)
+- [Validation](docs/validation.md)
 - [Roadmap](docs/roadmap.md)
 - [Contributing](CONTRIBUTING.md)
 - [Architecture decisions](docs/decisions/)
