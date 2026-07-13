@@ -207,6 +207,25 @@ final class DriftTransactionRepository implements TransactionRepository {
     });
   }
 
+  @override
+  Future<AppResult<List<Transaction>>> queryVaultActivity(
+    String vaultId,
+  ) async {
+    try {
+      final List<TransactionRow> rows = await dao.queryVaultActivity(vaultId);
+      return AppSuccess<List<Transaction>>(
+        List<Transaction>.unmodifiable(rows.map(_fromRow)),
+      );
+    } on Object catch (error) {
+      return AppError<List<Transaction>>(StorageFailure(cause: error));
+    }
+  }
+
+  @override
+  Stream<List<Transaction>> watchVaultActivity(String vaultId) => dao
+      .watchVaultActivity(vaultId)
+      .map((rows) => List<Transaction>.unmodifiable(rows.map(_fromRow)));
+
   LedgerPage _page(List<TransactionRow> rows, int limit) {
     final List<Transaction> items = List<Transaction>.unmodifiable(
       rows.map(_fromRow),
@@ -234,9 +253,21 @@ final class DriftTransactionRepository implements TransactionRepository {
     if (account.currencyCode != transaction.amount.currency.code) {
       return const CurrencyAccountMismatchFailure();
     }
+    if (transaction.isVaultActivity) {
+      final VaultRow? vault =
+          await (database.select(database.vaults)
+                ..where((table) => table.id.equals(transaction.vaultId!)))
+              .getSingleOrNull();
+      if (vault == null) return const MissingVaultFailure();
+      if (vault.deletedAt != null) return const ArchivedVaultFailure();
+      if (vault.currencyCode != transaction.amount.currency.code) {
+        return const CurrencyVaultMismatchFailure();
+      }
+      return null;
+    }
     final CategoryRow? category =
         await (database.select(database.categories)
-              ..where((table) => table.id.equals(transaction.categoryId)))
+              ..where((table) => table.id.equals(transaction.categoryId!)))
             .getSingleOrNull();
     if (category == null || category.deletedAt != null) {
       return const MissingCategoryFailure();
@@ -256,7 +287,8 @@ final class DriftTransactionRepository implements TransactionRepository {
     id: Value<String>(transaction.id),
     type: Value<String>(transaction.type.name),
     accountId: Value<String>(transaction.accountId),
-    categoryId: Value<String>(transaction.categoryId),
+    categoryId: Value<String?>(transaction.categoryId),
+    vaultId: Value<String?>(transaction.vaultId),
     incClass: Value<String?>(transaction.incClass?.name),
     currencyCode: Value<String>(transaction.amount.currency.code),
     amountMinor: Value<int>(transaction.amount.minorUnits),
@@ -286,6 +318,7 @@ final class DriftTransactionRepository implements TransactionRepository {
       amount: amount,
       accountId: row.accountId,
       categoryId: row.categoryId,
+      vaultId: row.vaultId,
       incClass: row.incClass == null
           ? null
           : IncClass.values.byName(row.incClass!),

@@ -237,7 +237,7 @@ class _EditFormState extends ConsumerState<_EditForm> {
     );
     _note = TextEditingController(text: widget.transaction.note);
     _accountId = widget.transaction.accountId;
-    _categoryId = widget.transaction.categoryId;
+    _categoryId = widget.transaction.categoryId!;
     _incClass = widget.transaction.incClass;
     _occurredAt = widget.transaction.occurredAt;
   }

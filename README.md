@@ -1,10 +1,13 @@
 # Lys Finance
 
 Lys Finance is a calm, offline-first personal finance companion for Android and
-iOS. Sprint 02 adds offline expense and income capture, a searchable and
+iOS. Sprint 02 added offline expense and income capture, a searchable and
 filterable ledger, transaction detail/edit/delete/restore flows, and derived
-account balances. Money remains exact integer minor units and local SQLite is
-the only source of truth.
+account balances. Sprint 03 adds the Vault Engine: purpose-driven savings
+vaults with contributions, withdrawals, vault-to-vault transfers, goal
+tracking (progress, pace, ETA, goal health), and a merged vault history
+timeline. Money remains exact integer minor units and local SQLite is the
+only source of truth.
 
 ## App preview
 
@@ -56,11 +59,14 @@ Generated `*.g.dart` and `*.freezed.dart` files are committed. CI regenerates an
 fails if they differ, making builds reproducible without hiding generated changes.
 Do not edit generated sources by hand.
 
-Schema version 3 is an additive migration: it introduces the transaction table,
-its query indexes, and four stable income-category seeds. Existing accounts,
-categories, settings, and metadata are preserved. Transactions are limited to
-expense and income workflows in this sprint; balances are always derived from
-opening balance plus active ledger entries and are never stored.
+Schema version 4 widens the transaction table (nullable `category_id`, a new
+nullable `vault_id`) and adds `vaults`, `vault_transfers`, and `vault_history`,
+seeding eight starter vaults. Existing accounts, categories, settings,
+transactions, and metadata are preserved. Vault contributions and withdrawals
+reuse the `Transaction` type Sprint 02 already reserved, so they appear in the
+unified ledger's data model without affecting an account's derived balance;
+only vault-to-vault transfers live in a dedicated, append-only table. Vault
+balances, like account balances, are always derived and never stored.
 
 ## Project guide
 

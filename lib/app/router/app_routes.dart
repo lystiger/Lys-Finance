@@ -15,7 +15,9 @@ abstract final class AppRoutes {
   static const String recentlyDeleted = '/ledger/deleted';
   static const String transactionDetail = '/transactions/:id';
   static const String transactionEdit = '/transactions/:id/edit';
+  static const String vaultDetail = '/vaults/:id';
 
   static String transaction(String id) => '/transactions/$id';
   static String editTransaction(String id) => '/transactions/$id/edit';
+  static String vault(String id) => '/vaults/$id';
 }

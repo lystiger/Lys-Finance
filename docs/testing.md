@@ -16,6 +16,13 @@ The final Sprint 02 local gate on 2026-07-13 measured 105 ms for the first
 ledger page, 38 ms for search, 26 ms for account balance, and 17 ms for a local
 save with 10,000 rows present. These figures are test-environment evidence, not
 production telemetry.
+- Sprint 03 vault tests cover `Vault`/`VaultTransfer` invariants,
+  `ProjectionService`'s goal-tracking formulas across every Goal Health branch,
+  vault lifecycle (create/edit/archive/restore with optimistic concurrency),
+  contribution/withdrawal/transfer balance derivation and atomicity, the
+  non-negative withdrawal rule, the locked-vault reason requirement,
+  milestone/goal-completion/goal-reopened idempotency, currency-lock-after-
+  first-contribution, and the merged vault history timeline.
 - Widget tests cover smoke startup, routing, accessibility/text scale, and both
   themes.
 - Golden tests use the fixed viewport helper in `test/helpers/golden.dart`.

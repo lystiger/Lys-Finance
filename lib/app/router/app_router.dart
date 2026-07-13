@@ -10,6 +10,7 @@ import '../../features/settings/presentation/foundation_settings_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/transactions/presentation/ledger_screen.dart';
 import '../../features/transactions/presentation/transaction_detail_screen.dart';
+import '../../features/vaults/presentation/vault_detail_screen.dart';
 import '../../features/vaults/presentation/vaults_screen.dart';
 import 'app_routes.dart';
 import 'navigation_shell.dart';
@@ -153,6 +154,11 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
         path: AppRoutes.transactionEdit,
         builder: (BuildContext context, GoRouterState state) =>
             EditTransactionScreen(transactionId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.vaultDetail,
+        builder: (BuildContext context, GoRouterState state) =>
+            VaultDetailScreen(vaultId: state.pathParameters['id']!),
       ),
     ],
   );

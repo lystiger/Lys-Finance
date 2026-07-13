@@ -50,9 +50,11 @@ not allowed.
 
 The database provider owns `AppDatabase` and closes it when its container is
 disposed. Schema version 1 was empty; version 2 adds only accounts, categories,
-app settings, and seed metadata. Every future schema change must increment the
-version, add a tested forward migration, and preserve local data. Downgrades
-fail explicitly. See [database migrations](database-migrations.md).
+app settings, and seed metadata; version 3 adds transactions; version 4 adds
+vaults, vault transfers, and vault history, and widens transactions with a
+nullable `vault_id`. Every future schema change must increment the version,
+add a tested forward migration, and preserve local data. Downgrades fail
+explicitly. See [database migrations](database-migrations.md).
 
 Money is an immutable core value using checked signed-64-bit minor units. Domain
 code never uses `double` for finance. Account/category/settings repositories
