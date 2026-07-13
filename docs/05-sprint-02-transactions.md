@@ -1002,7 +1002,7 @@ flowchart TD
 - [x] No analyzer warnings; formatting passes; all tests pass.
 - [ ] Android debug APK builds and the flow is verified on a physical
       device or emulator.
-- [ ] GitHub CI passes.
+- [x] GitHub CI passes.
 - [x] Architecture documentation matches the implementation.
 - [x] No budgets, vaults, subscriptions, analytics, AI, cloud sync, or
       recurring-payment logic was introduced.
