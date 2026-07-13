@@ -1,9 +1,10 @@
 # Lys Finance
 
 Lys Finance is a calm, offline-first personal finance companion for Android and
-iOS. Sprint 01 adds exact integer money, currencies, account/category/settings
-contracts, local schema migration, repositories, validation, and reusable UI
-components. It intentionally contains no transaction or dashboard behavior yet.
+iOS. Sprint 02 adds offline expense and income capture, a searchable and
+filterable ledger, transaction detail/edit/delete/restore flows, and derived
+account balances. Money remains exact integer minor units and local SQLite is
+the only source of truth.
 
 ## App preview
 
@@ -54,6 +55,12 @@ fvm flutter build apk --debug
 Generated `*.g.dart` and `*.freezed.dart` files are committed. CI regenerates and
 fails if they differ, making builds reproducible without hiding generated changes.
 Do not edit generated sources by hand.
+
+Schema version 3 is an additive migration: it introduces the transaction table,
+its query indexes, and four stable income-category seeds. Existing accounts,
+categories, settings, and metadata are preserved. Transactions are limited to
+expense and income workflows in this sprint; balances are always derived from
+opening balance plus active ledger entries and are never stored.
 
 ## Project guide
 

@@ -11,4 +11,11 @@ abstract final class AppRoutes {
   static const String settingsAppearance = '/settings/appearance';
   static const String settingsNotifications = '/settings/notifications';
   static const String settingsBackup = '/settings/backup';
+  static const String ledger = '/ledger';
+  static const String recentlyDeleted = '/ledger/deleted';
+  static const String transactionDetail = '/transactions/:id';
+  static const String transactionEdit = '/transactions/:id/edit';
+
+  static String transaction(String id) => '/transactions/$id';
+  static String editTransaction(String id) => '/transactions/$id/edit';
 }

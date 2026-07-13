@@ -3,8 +3,8 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'app_database.g.dart';
 
-const int appDatabaseSchemaVersion = 2;
-const int foundationSeedVersion = 1;
+const int appDatabaseSchemaVersion = 3;
+const int foundationSeedVersion = 2;
 
 @DataClassName('AccountRow')
 class Accounts extends Table {
@@ -80,8 +80,50 @@ class AppMetadataEntries extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{key};
 }
 
+@DataClassName('TransactionRow')
+class Transactions extends Table {
+  TextColumn get id => text()();
+  TextColumn get type => text().check(
+    const CustomExpression<bool>(
+      "type IN ('expense','income','transfer','contribution','withdrawal')",
+    ),
+  )();
+  TextColumn get accountId =>
+      text().references(Accounts, #id, onDelete: KeyAction.restrict)();
+  TextColumn get categoryId =>
+      text().references(Categories, #id, onDelete: KeyAction.restrict)();
+  TextColumn get incClass => text().nullable()();
+  TextColumn get currencyCode => text().withLength(min: 3, max: 3)();
+  IntColumn get amountMinor =>
+      integer().check(const CustomExpression<bool>('amount_minor > 0'))();
+  TextColumn get note => text().withLength(min: 0, max: 2000).nullable()();
+  IntColumn get occurredAt => integer()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+  IntColumn get deletedAt => integer().nullable()();
+  IntColumn get version =>
+      integer().check(const CustomExpression<bool>('version >= 1'))();
+
+  @override
+  List<Set<Column<Object>>> get uniqueKeys => const <Set<Column<Object>>>[];
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<String> get customConstraints => <String>[
+    "CHECK ((type = 'expense' AND inc_class IN ('investment','necessity','consumption')) OR (type = 'income' AND inc_class IS NULL) OR type IN ('transfer','contribution','withdrawal'))",
+  ];
+}
+
 @DriftDatabase(
-  tables: <Type>[Accounts, Categories, AppSettingsEntries, AppMetadataEntries],
+  tables: <Type>[
+    Accounts,
+    Categories,
+    AppSettingsEntries,
+    AppMetadataEntries,
+    Transactions,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase({QueryExecutor? executor})
@@ -95,12 +137,19 @@ class AppDatabase extends _$AppDatabase {
     onCreate: (Migrator migrator) async {
       await migrator.createAll();
       await _createFoundationIndexes();
+      await _createTransactionIndexes();
       await _seedFoundation();
     },
     onUpgrade: _migrate,
     beforeOpen: (OpeningDetails details) async {
       await customStatement('PRAGMA foreign_keys = ON');
       await _seedFoundation();
+      final List<QueryRow> violations = await customSelect(
+        'PRAGMA foreign_key_check',
+      ).get();
+      if (violations.isNotEmpty) {
+        throw StateError('Database migration left foreign-key violations.');
+      }
     },
   );
 
@@ -120,6 +169,32 @@ class AppDatabase extends _$AppDatabase {
       await _createFoundationIndexes();
       await _seedFoundation();
     }
+    if (from < 3) {
+      await migrator.createTable(transactions);
+      await _createTransactionIndexes();
+      await _seedFoundation();
+    }
+  }
+
+  Future<void> _createTransactionIndexes() async {
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_account_ledger ON transactions(account_id, deleted_at, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_category_ledger ON transactions(category_id, deleted_at, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_type_ledger ON transactions(type, deleted_at, occurred_at DESC)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_inc_ledger ON transactions(inc_class, deleted_at, occurred_at DESC) WHERE inc_class IS NOT NULL',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_deleted ON transactions(deleted_at)',
+    );
+    await customStatement(
+      'CREATE INDEX IF NOT EXISTS transactions_order ON transactions(deleted_at, occurred_at DESC, created_at DESC, id DESC)',
+    );
   }
 
   Future<void> _createFoundationIndexes() async {
@@ -241,7 +316,7 @@ class AppDatabase extends _$AppDatabase {
           value: foundationSeedVersion.toString(),
           updatedAt: timestamp,
         ),
-        mode: InsertMode.insertOrIgnore,
+        mode: InsertMode.insertOrReplace,
       );
     });
   }
@@ -348,5 +423,41 @@ const List<_CategorySeed> _categorySeeds = <_CategorySeed>[
     iconKey: 'more_horiz',
     colorToken: 'category8',
     sortOrder: 7,
+  ),
+  _CategorySeed(
+    id: '00000000-0000-4000-8000-000000000110',
+    localizationKey: 'category.freelance',
+    type: 'income',
+    incClass: null,
+    iconKey: 'work',
+    colorToken: 'income',
+    sortOrder: 1,
+  ),
+  _CategorySeed(
+    id: '00000000-0000-4000-8000-000000000111',
+    localizationKey: 'category.businessIncome',
+    type: 'income',
+    incClass: null,
+    iconKey: 'business',
+    colorToken: 'income',
+    sortOrder: 2,
+  ),
+  _CategorySeed(
+    id: '00000000-0000-4000-8000-000000000112',
+    localizationKey: 'category.gift',
+    type: 'income',
+    incClass: null,
+    iconKey: 'redeem',
+    colorToken: 'income',
+    sortOrder: 3,
+  ),
+  _CategorySeed(
+    id: '00000000-0000-4000-8000-000000000113',
+    localizationKey: 'category.otherIncome',
+    type: 'income',
+    incClass: null,
+    iconKey: 'more_horiz',
+    colorToken: 'income',
+    sortOrder: 4,
   ),
 ];

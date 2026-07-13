@@ -277,6 +277,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get categoryOther;
+
+  /// No description provided for @categoryFreelance.
+  ///
+  /// In en, this message translates to:
+  /// **'Freelance'**
+  String get categoryFreelance;
+
+  /// No description provided for @categoryBusinessIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Business income'**
+  String get categoryBusinessIncome;
+
+  /// No description provided for @categoryGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift'**
+  String get categoryGift;
+
+  /// No description provided for @categoryOtherIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Other income'**
+  String get categoryOtherIncome;
+
+  /// No description provided for @transactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get transactions;
+
+  /// No description provided for @expense.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get expense;
+
+  /// No description provided for @income.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get income;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @incomeSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Income source'**
+  String get incomeSource;
+
+  /// No description provided for @investment.
+  ///
+  /// In en, this message translates to:
+  /// **'Investment'**
+  String get investment;
+
+  /// No description provided for @necessity.
+  ///
+  /// In en, this message translates to:
+  /// **'Necessity'**
+  String get necessity;
+
+  /// No description provided for @consumption.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumption'**
+  String get consumption;
+
+  /// No description provided for @note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get note;
+
+  /// No description provided for @optionalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional note'**
+  String get optionalNote;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restore;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search transactions'**
+  String get search;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get clearFilters;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMore;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @recentlyDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently deleted'**
+  String get recentlyDeleted;
+
+  /// No description provided for @emptyLedgerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get emptyLedgerTitle;
+
+  /// No description provided for @emptyLedgerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Record an expense or income to begin your ledger.'**
+  String get emptyLedgerMessage;
+
+  /// No description provided for @addTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add transaction'**
+  String get addTransaction;
+
+  /// No description provided for @transactionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction details'**
+  String get transactionDetails;
+
+  /// No description provided for @deleteTransactionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete transaction?'**
+  String get deleteTransactionTitle;
+
+  /// No description provided for @deleteTransactionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'It will leave your ledger and can be restored later.'**
+  String get deleteTransactionMessage;
+
+  /// No description provided for @transactionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction deleted.'**
+  String get transactionDeleted;
+
+  /// No description provided for @transactionRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction restored.'**
+  String get transactionRestored;
+
+  /// No description provided for @invalidAmountError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount greater than zero.'**
+  String get invalidAmountError;
+
+  /// No description provided for @missingAccountError.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an account to continue.'**
+  String get missingAccountError;
+
+  /// No description provided for @archivedAccountError.
+  ///
+  /// In en, this message translates to:
+  /// **'This account is archived. Choose another.'**
+  String get archivedAccountError;
+
+  /// No description provided for @missingCategoryError.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a category to continue.'**
+  String get missingCategoryError;
+
+  /// No description provided for @categoryMismatchError.
+  ///
+  /// In en, this message translates to:
+  /// **'That category does not match this transaction type.'**
+  String get categoryMismatchError;
+
+  /// No description provided for @currencyMismatchError.
+  ///
+  /// In en, this message translates to:
+  /// **'This account uses a different currency.'**
+  String get currencyMismatchError;
+
+  /// No description provided for @versionConflictError.
+  ///
+  /// In en, this message translates to:
+  /// **'This transaction changed elsewhere. Reload and try again.'**
+  String get versionConflictError;
+
+  /// No description provided for @databaseWriteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save. Please try again.'**
+  String get databaseWriteError;
+
+  /// No description provided for @databaseReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your transactions. Please try again.'**
+  String get databaseReadError;
+
+  /// No description provided for @unableToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load'**
+  String get unableToLoad;
+
+  /// No description provided for @loadingTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading transactions'**
+  String get loadingTransactions;
+
+  /// No description provided for @selectAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Select account'**
+  String get selectAccount;
+
+  /// No description provided for @selectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get selectCategory;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 }
 
 class _AppLocalizationsDelegate
