@@ -42,4 +42,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.widgetWithText(AppBar, 'Settings'), findsOneWidget);
   });
+
+  testWidgets('Settings exposes every structured foundation route', (
+    WidgetTester tester,
+  ) async {
+    final router = createAppRouter(initialLocation: '/settings');
+    addTearDown(router.dispose);
+    await tester.pumpWidget(LysFinanceApp(router: router));
+    await tester.pumpAndSettle();
+
+    for (final String destination in <String>[
+      'Accounts',
+      'Categories',
+      'Currencies',
+      'Appearance',
+      'Notifications',
+      'Backup & export',
+    ]) {
+      await tester.tap(find.text(destination));
+      await tester.pumpAndSettle();
+      expect(find.text('Foundation ready'), findsOneWidget);
+      router.pop();
+      await tester.pumpAndSettle();
+    }
+  });
 }

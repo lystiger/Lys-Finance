@@ -157,6 +157,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts'**
+  String get accounts;
+
+  /// No description provided for @categories.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// No description provided for @currencies.
+  ///
+  /// In en, this message translates to:
+  /// **'Currencies'**
+  String get currencies;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @backupExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & export'**
+  String get backupExport;
+
+  /// No description provided for @foundationEntryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation settings for a future sprint.'**
+  String get foundationEntryDescription;
+
+  /// No description provided for @foundationRouteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation ready'**
+  String get foundationRouteTitle;
+
+  /// No description provided for @foundationRouteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This setting is prepared, but its workflow belongs to a later sprint.'**
+  String get foundationRouteMessage;
+
+  /// No description provided for @accountCashWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash Wallet'**
+  String get accountCashWallet;
+
+  /// No description provided for @accountBankAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank Account'**
+  String get accountBankAccount;
+
+  /// No description provided for @categorySalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get categorySalary;
+
+  /// No description provided for @categoryFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get categoryFood;
+
+  /// No description provided for @categoryTransport.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get categoryTransport;
+
+  /// No description provided for @categoryShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get categoryShopping;
+
+  /// No description provided for @categoryAiSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'AI subscription'**
+  String get categoryAiSubscription;
+
+  /// No description provided for @categoryHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get categoryHealth;
+
+  /// No description provided for @categoryEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Education'**
+  String get categoryEducation;
+
+  /// No description provided for @categoryInvestment.
+  ///
+  /// In en, this message translates to:
+  /// **'Investment'**
+  String get categoryInvestment;
+
+  /// No description provided for @categoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get categoryOther;
 }
 
 class _AppLocalizationsDelegate

@@ -37,4 +37,65 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get close => 'Đóng';
+
+  @override
+  String get accounts => 'Tài khoản';
+
+  @override
+  String get categories => 'Danh mục';
+
+  @override
+  String get currencies => 'Tiền tệ';
+
+  @override
+  String get appearance => 'Giao diện';
+
+  @override
+  String get notifications => 'Thông báo';
+
+  @override
+  String get backupExport => 'Sao lưu & xuất dữ liệu';
+
+  @override
+  String get foundationEntryDescription => 'Cài đặt nền tảng cho sprint sau.';
+
+  @override
+  String get foundationRouteTitle => 'Nền tảng đã sẵn sàng';
+
+  @override
+  String get foundationRouteMessage =>
+      'Cài đặt này đã được chuẩn bị, nhưng quy trình sẽ được xây dựng trong sprint sau.';
+
+  @override
+  String get accountCashWallet => 'Ví tiền mặt';
+
+  @override
+  String get accountBankAccount => 'Tài khoản ngân hàng';
+
+  @override
+  String get categorySalary => 'Lương';
+
+  @override
+  String get categoryFood => 'Ăn uống';
+
+  @override
+  String get categoryTransport => 'Di chuyển';
+
+  @override
+  String get categoryShopping => 'Mua sắm';
+
+  @override
+  String get categoryAiSubscription => 'Gói AI';
+
+  @override
+  String get categoryHealth => 'Sức khỏe';
+
+  @override
+  String get categoryEducation => 'Giáo dục';
+
+  @override
+  String get categoryInvestment => 'Đầu tư';
+
+  @override
+  String get categoryOther => 'Khác';
 }

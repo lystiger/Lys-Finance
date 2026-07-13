@@ -2,15 +2,15 @@
 
 Lys Finance uses feature-first Clean Architecture with Riverpod as dependency
 injection and Drift/SQLite as the offline source of truth. Cloud services are not
-part of Sprint 00 and may never block a local operation.
+part of Sprint 01 and may never block a local operation.
 
 ## Top-level structure
 
 - `lib/app`: composition root, routing, shell, and bootstrap behavior.
 - `lib/core`: cross-cutting technical capabilities such as configuration,
   database, errors, localization, logging, providers, storage, and theme.
-- `lib/features`: independently owned product slices. Sprint 00 contains only
-  presentation placeholders.
+- `lib/features`: independently owned product slices. Sprint 01 gives Settings
+  real domain, data, application, and presentation responsibilities.
 - `lib/shared`: reusable UI with no feature ownership.
 
 Do not create empty layers. Add `presentation`, `application`, `domain`, and
@@ -49,9 +49,17 @@ All dependencies must remain overridable in tests. Global mutable singletons are
 not allowed.
 
 The database provider owns `AppDatabase` and closes it when its container is
-disposed. Schema version 1 has no business tables. Every future schema change
-must increment the version, add a tested forward migration, and preserve local
-data. Downgrades fail explicitly.
+disposed. Schema version 1 was empty; version 2 adds only accounts, categories,
+app settings, and seed metadata. Every future schema change must increment the
+version, add a tested forward migration, and preserve local data. Downgrades
+fail explicitly. See [database migrations](database-migrations.md).
+
+Money is an immutable core value using checked signed-64-bit minor units. Domain
+code never uses `double` for finance. Account/category/settings repositories
+translate Drift rows and SQLite failures at the data boundary, while application
+services enforce command validation and duplicate checks. See the
+[domain model](domain-model.md), [repositories](repositories.md), and
+[validation](validation.md).
 
 ## Errors, privacy, and configuration
 

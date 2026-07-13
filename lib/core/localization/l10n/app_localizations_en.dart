@@ -37,4 +37,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close => 'Close';
+
+  @override
+  String get accounts => 'Accounts';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get currencies => 'Currencies';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get backupExport => 'Backup & export';
+
+  @override
+  String get foundationEntryDescription =>
+      'Foundation settings for a future sprint.';
+
+  @override
+  String get foundationRouteTitle => 'Foundation ready';
+
+  @override
+  String get foundationRouteMessage =>
+      'This setting is prepared, but its workflow belongs to a later sprint.';
+
+  @override
+  String get accountCashWallet => 'Cash Wallet';
+
+  @override
+  String get accountBankAccount => 'Bank Account';
+
+  @override
+  String get categorySalary => 'Salary';
+
+  @override
+  String get categoryFood => 'Food';
+
+  @override
+  String get categoryTransport => 'Transport';
+
+  @override
+  String get categoryShopping => 'Shopping';
+
+  @override
+  String get categoryAiSubscription => 'AI subscription';
+
+  @override
+  String get categoryHealth => 'Health';
+
+  @override
+  String get categoryEducation => 'Education';
+
+  @override
+  String get categoryInvestment => 'Investment';
+
+  @override
+  String get categoryOther => 'Other';
 }
