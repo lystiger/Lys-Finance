@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lys_finance/app/app.dart';
 import 'package:lys_finance/app/router/app_router.dart';
+import 'package:lys_finance/features/settings/application/providers/settings_providers.dart';
+import 'package:lys_finance/features/settings/domain/entities/account.dart';
+import 'package:lys_finance/features/settings/domain/entities/category.dart';
 
 void main() {
   testWidgets('shell navigates to every Sprint 00 destination', (
@@ -9,7 +13,16 @@ void main() {
   ) async {
     final router = createAppRouter();
     addTearDown(router.dispose);
-    await tester.pumpWidget(LysFinanceApp(router: router));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          activeAccountsProvider.overrideWith(
+            (ref) => Stream.value(const <Account>[]),
+          ),
+        ],
+        child: LysFinanceApp(router: router),
+      ),
+    );
     await tester.pumpAndSettle();
 
     for (final String destination in <String>[
@@ -29,7 +42,19 @@ void main() {
   ) async {
     final router = createAppRouter();
     addTearDown(router.dispose);
-    await tester.pumpWidget(LysFinanceApp(router: router));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          activeAccountsProvider.overrideWith(
+            (ref) => Stream.value(const <Account>[]),
+          ),
+          activeCategoriesProvider(
+            type: null,
+          ).overrideWith((ref) => Stream.value(const <Category>[])),
+        ],
+        child: LysFinanceApp(router: router),
+      ),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('quick-add-action')));
@@ -48,7 +73,9 @@ void main() {
   ) async {
     final router = createAppRouter(initialLocation: '/settings');
     addTearDown(router.dispose);
-    await tester.pumpWidget(LysFinanceApp(router: router));
+    await tester.pumpWidget(
+      ProviderScope(child: LysFinanceApp(router: router)),
+    );
     await tester.pumpAndSettle();
 
     for (final String destination in <String>[

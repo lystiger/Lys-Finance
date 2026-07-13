@@ -8,6 +8,8 @@ import '../../features/insights/presentation/insights_screen.dart';
 import '../../features/quick_add/presentation/quick_add_screen.dart';
 import '../../features/settings/presentation/foundation_settings_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/transactions/presentation/ledger_screen.dart';
+import '../../features/transactions/presentation/transaction_detail_screen.dart';
 import '../../features/vaults/presentation/vaults_screen.dart';
 import 'app_routes.dart';
 import 'navigation_shell.dart';
@@ -131,6 +133,26 @@ GoRouter createAppRouter({String initialLocation = AppRoutes.home}) {
               fullscreenDialog: true,
               child: QuickAddScreen(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.ledger,
+        builder: (BuildContext context, GoRouterState state) =>
+            const LedgerScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.recentlyDeleted,
+        builder: (BuildContext context, GoRouterState state) =>
+            const LedgerScreen(deletedOnly: true),
+      ),
+      GoRoute(
+        path: AppRoutes.transactionDetail,
+        builder: (BuildContext context, GoRouterState state) =>
+            TransactionDetailScreen(transactionId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: AppRoutes.transactionEdit,
+        builder: (BuildContext context, GoRouterState state) =>
+            EditTransactionScreen(transactionId: state.pathParameters['id']!),
       ),
     ],
   );

@@ -11,6 +11,11 @@ missing records, storage errors, and optimistic-version conflicts.
 - `SettingsRepository` owns the singleton preferences record and atomic repair.
 - `CurrencyRepository` exposes the immutable VND/USD catalog; it performs no
   network or exchange-rate work.
+- `TransactionRepository` provides versioned create/update/delete/restore,
+  reactive detail and ledger reads, stable keyset pagination over occurrence,
+  creation time, and ID, composable filters/search, and exact derived account
+  balances. Deleted rows are excluded by default and remain available through
+  the Recently Deleted surface.
 
 Application services validate commands and orchestrate repositories. Riverpod
 providers compose concrete dependencies and remain replaceable in tests.

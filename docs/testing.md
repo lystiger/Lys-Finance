@@ -7,6 +7,15 @@ Tests mirror production ownership under `test/`:
   required to test application code.
 - Database tests use `NativeDatabase.memory()` and must cover initialization and
   every future migration.
+- Sprint 02 repository tests cover exact balance derivation, filtering/search,
+  keyset ordering, optimistic conflicts, soft delete, and restore. A generated
+  10,000-row database test enforces the documented ledger, search, balance, and
+  local-write budgets.
+
+The final Sprint 02 local gate on 2026-07-13 measured 105 ms for the first
+ledger page, 38 ms for search, 26 ms for account balance, and 17 ms for a local
+save with 10,000 rows present. These figures are test-environment evidence, not
+production telemetry.
 - Widget tests cover smoke startup, routing, accessibility/text scale, and both
   themes.
 - Golden tests use the fixed viewport helper in `test/helpers/golden.dart`.

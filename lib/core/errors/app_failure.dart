@@ -56,3 +56,42 @@ final class UnexpectedFailure extends AppFailure {
   const UnexpectedFailure({super.cause})
     : super('Something went wrong. Please try again.', code: 'unexpected');
 }
+
+final class InvalidAmountFailure extends ValidationFailure {
+  const InvalidAmountFailure()
+    : super('Enter an amount greater than zero.', code: 'invalid_amount');
+}
+
+final class MissingAccountFailure extends RepositoryFailure {
+  const MissingAccountFailure()
+    : super('Choose an account to continue.', code: 'missing_account');
+}
+
+final class ArchivedAccountFailure extends RepositoryFailure {
+  const ArchivedAccountFailure()
+    : super(
+        'This account is archived. Choose another.',
+        code: 'archived_account',
+      );
+}
+
+final class MissingCategoryFailure extends RepositoryFailure {
+  const MissingCategoryFailure()
+    : super('Choose a category to continue.', code: 'missing_category');
+}
+
+final class CategoryKindMismatchFailure extends RepositoryFailure {
+  const CategoryKindMismatchFailure()
+    : super(
+        'That category does not match this transaction type.',
+        code: 'category_kind_mismatch',
+      );
+}
+
+final class CurrencyAccountMismatchFailure extends RepositoryFailure {
+  const CurrencyAccountMismatchFailure()
+    : super(
+        'This account uses a different currency.',
+        code: 'currency_account_mismatch',
+      );
+}

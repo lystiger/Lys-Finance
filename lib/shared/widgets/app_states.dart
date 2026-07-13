@@ -21,7 +21,7 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
+    child: SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -47,11 +47,13 @@ class EmptyState extends StatelessWidget {
 
 class ErrorState extends StatelessWidget {
   const ErrorState({
+    required this.title,
     required this.message,
     this.retryLabel,
     this.onRetry,
     super.key,
   });
+  final String title;
   final String message;
   final String? retryLabel;
   final VoidCallback? onRetry;
@@ -59,7 +61,7 @@ class ErrorState extends StatelessWidget {
   @override
   Widget build(BuildContext context) => EmptyState(
     icon: Icons.error_outline,
-    title: 'Unable to load',
+    title: title,
     message: message,
     actionLabel: retryLabel,
     onAction: onRetry,
